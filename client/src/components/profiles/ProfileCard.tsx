@@ -50,6 +50,10 @@ export default function ProfileCard({
   onOpenEdit
 }: ProfileCardProps) {
   const queryClient = useQueryClient();
+  const { role } = useAuth();
+  
+  // Check if user is admin
+  const isAdmin = role === 'admin';
   
   // Format dates nicely
   const formattedDate = () => {
@@ -232,55 +236,69 @@ export default function ProfileCard({
           
           {/* Actions */}
           <div className="flex items-center space-x-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-              onClick={handleToggleFavorite}
-            >
-              {isFavorite ? (
-                <i className="ri-star-fill text-lg text-yellow-500"></i>
-              ) : (
-                <i className="ri-star-line text-lg text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"></i>
-              )}
-            </Button>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            {/* Show action buttons only for admins */}
+            {isAdmin && (
+              <>
                 <Button 
                   variant="ghost" 
-                  size="icon"
+                  size="icon" 
                   className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={handleToggleFavorite}
                 >
-                  <i className="ri-more-2-fill text-lg text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"></i>
-                </Button>
-              </DropdownMenuTrigger>
-              
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onOpenEdit && onOpenEdit(id)}>
-                  <i className="ri-edit-line mr-2"></i> Edit
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem onClick={() => toggleArchiveMutation.mutate()}>
-                  {isArchived ? (
-                    <>
-                      <i className="ri-inbox-unarchive-line mr-2"></i> Restore
-                    </>
+                  {isFavorite ? (
+                    <i className="ri-star-fill text-lg text-yellow-500"></i>
                   ) : (
-                    <>
-                      <i className="ri-archive-line mr-2"></i> Archive
-                    </>
+                    <i className="ri-star-line text-lg text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"></i>
                   )}
-                </DropdownMenuItem>
+                </Button>
                 
-                <DropdownMenuItem 
-                  onClick={handleDelete}
-                  className="text-red-500 focus:text-red-500 dark:text-red-400 dark:focus:text-red-400"
-                >
-                  <i className="ri-delete-bin-line mr-2"></i> Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <i className="ri-more-2-fill text-lg text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"></i>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  
+                  <DropdownMenuContent align="end">
+                    {onOpenEdit && (
+                      <DropdownMenuItem onClick={() => onOpenEdit(id)}>
+                        <i className="ri-edit-line mr-2"></i> Edit
+                      </DropdownMenuItem>
+                    )}
+                    
+                    <DropdownMenuItem onClick={() => toggleArchiveMutation.mutate()}>
+                      {isArchived ? (
+                        <>
+                          <i className="ri-inbox-unarchive-line mr-2"></i> Restore
+                        </>
+                      ) : (
+                        <>
+                          <i className="ri-archive-line mr-2"></i> Archive
+                        </>
+                      )}
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem 
+                      onClick={handleDelete}
+                      className="text-red-500 focus:text-red-500 dark:text-red-400 dark:focus:text-red-400"
+                    >
+                      <i className="ri-delete-bin-line mr-2"></i> Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
+            
+            {/* For viewer role, just show view indicator */}
+            {!isAdmin && (
+              <Badge variant="outline" className="px-2 py-1 text-xs">
+                View only
+              </Badge>
+            )}
           </div>
         </div>
       </CardContent>

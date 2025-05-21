@@ -54,9 +54,25 @@ export default function ProfileList({
   };
   
   // Fetch profiles data
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [`${apiEndpoint}?${buildQueryParams()}`],
-    keepPreviousData: true
+  interface ProfilesResponse {
+    profiles: Array<{
+      id: number;
+      firstName: string;
+      lastName: string;
+      email: string;
+      phone?: string;
+      profileType: string;
+      status: string;
+      profilePicUrl?: string;
+      isFavorite: boolean;
+      isArchived: boolean;
+      createdAt: string;
+    }>;
+    total: number;
+  }
+  
+  const { data, isLoading, isError } = useQuery<ProfilesResponse>({
+    queryKey: [`${apiEndpoint}?${buildQueryParams()}`]
   });
   
   // Handle pagination change
@@ -218,7 +234,7 @@ export default function ProfileList({
           />
         ) : (
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {profiles.map((profile) => (
+            {profiles.map((profile: any) => (
               <ProfileCard
                 key={profile.id}
                 id={profile.id}
