@@ -170,6 +170,7 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
                   {...field} 
                   placeholder="Add a description for this profile..."
                   rows={3}
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -191,7 +192,7 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Email <span className="text-red-500">*</span>
+                Email
               </FormLabel>
               <FormControl>
                 <Input {...field} type="email" placeholder="email@example.com" value={field.value || ""} />
@@ -223,7 +224,7 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
           <FormItem>
             <FormLabel>Phone Number</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="(555) 123-4567" />
+              <Input {...field} placeholder="(555) 123-4567" value={field.value || ""} />
             </FormControl>
             <FormDescription>
               Optional - Include country code for international numbers

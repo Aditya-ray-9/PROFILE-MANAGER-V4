@@ -14,13 +14,10 @@ import MultiStep from "@/components/ui/multi-step";
 
 // Extend profile schema for client-side validation
 const profileFormSchema = insertProfileSchema.extend({
-  confirmEmail: z.string().email("Invalid email")
-    .optional()
-    .refine(data => !data || data === insertProfileSchema.shape.email, {
-      message: "Emails don't match",
-    }),
+  confirmEmail: z.string()
+    .optional(),
 }).partial({
-  // Make all contact details completely optional
+  // Make all these fields optional
   email: true,
   phone: true,
   description: true,
@@ -69,19 +66,21 @@ export default function AddProfileModal({
   
   // Update form values when profile data is loaded
   useEffect(() => {
-    if (profileData) {
-      // Reset form with profile data
-      methods.reset({
-        firstName: profileData.firstName,
-        lastName: profileData.lastName,
-        email: profileData.email,
-        phone: profileData.phone || "",
-        profileId: profileData.profileId || "",
-        specialId: profileData.specialId || "",
-        description: profileData.description || "",
-        isFavorite: profileData.isFavorite,
-        isArchived: profileData.isArchived
-      });
+    if (profileData && typeof profileData === 'object') {
+      // Reset form with profile data, using type assertion to handle the data
+      const profile = profileData as any;
+      const formData: ProfileFormValues = {
+        firstName: profile.firstName || "",
+        lastName: profile.lastName || "",
+        email: profile.email || "",
+        phone: profile.phone || "",
+        profileId: profile.profileId || "",
+        specialId: profile.specialId || "",
+        description: profile.description || "",
+        isFavorite: Boolean(profile.isFavorite),
+        isArchived: Boolean(profile.isArchived)
+      };
+      methods.reset(formData);
     }
   }, [profileData, methods]);
   
@@ -279,10 +278,10 @@ export default function AddProfileModal({
                 </Button>
               ) : (
                 <Button
-                  type="submit"
+                  type="button"
                   onClick={() => onSubmit(methods.getValues())}
                   disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
-                  className="bg-neon-500 hover:bg-neon-600"
+                  className="bg-blue-500 hover:bg-blue-600 text-white"
                 >
                   {isEditing ? "Save Changes" : "Create Profile"}
                 </Button>
