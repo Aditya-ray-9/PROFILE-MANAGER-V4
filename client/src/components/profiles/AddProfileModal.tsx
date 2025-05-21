@@ -19,6 +19,11 @@ const profileFormSchema = insertProfileSchema.extend({
     .refine(data => !data || data === insertProfileSchema.shape.email, {
       message: "Emails don't match",
     }),
+}).partial({
+  // Make these fields optional for easier form completion 
+  email: true,
+  phone: true,
+  description: true,
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -220,11 +225,22 @@ export default function AddProfileModal({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-hidden">
             {/* Progress Steps */}
-            <MultiStep 
-              steps={steps.map(s => ({ title: s.title, description: s.description }))} 
-              currentStep={step} 
-              className="mb-8 px-6"
-            />
+            <div className="px-6 py-2 border-b border-gray-200 dark:border-gray-700 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className={`px-3 py-1 rounded ${step === 0 ? 'bg-neon-100 text-neon-600 dark:bg-neon-900 dark:text-neon-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
+                  Basic Info
+                </div>
+                <div className={`px-3 py-1 rounded ${step === 1 ? 'bg-neon-100 text-neon-600 dark:bg-neon-900 dark:text-neon-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
+                  Contact Details
+                </div>
+                <div className={`px-3 py-1 rounded ${step === 2 ? 'bg-neon-100 text-neon-600 dark:bg-neon-900 dark:text-neon-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
+                  Documents
+                </div>
+              </div>
+              <span className="text-sm text-gray-500 dark:text-gray-400">Step {step + 1} of 3</span>
+            </div>
+          </div>
             
             {/* Form Content */}
             <div className="overflow-y-auto px-6 flex-1">
@@ -251,13 +267,24 @@ export default function AddProfileModal({
                 </Button>
               )}
               
-              <Button
-                type="button"
-                onClick={handleNextStep}
-                disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
-              >
-                {step < 2 ? "Next Step" : (isEditing ? "Save Changes" : "Create Profile")}
-              </Button>
+              {step < 2 ? (
+                <Button
+                  type="button"
+                  onClick={handleNextStep}
+                  disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
+                >
+                  Next Step
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={methods.handleSubmit(onSubmit)}
+                  disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
+                  className="bg-neon-500 hover:bg-neon-600"
+                >
+                  {isEditing ? "Save Changes" : "Create Profile"}
+                </Button>
+              )}
             </DialogFooter>
           </form>
         </FormProvider>
