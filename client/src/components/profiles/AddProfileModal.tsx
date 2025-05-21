@@ -277,8 +277,8 @@ export default function AddProfileModal({
                 </Button>
               ) : (
                 <Button
-                  type="button"
-                  onClick={methods.handleSubmit(onSubmit)}
+                  type="submit"
+                  onClick={() => onSubmit(methods.getValues())}
                   disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
                   className="bg-neon-500 hover:bg-neon-600"
                 >
