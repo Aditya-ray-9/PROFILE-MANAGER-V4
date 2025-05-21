@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -8,6 +9,7 @@ interface HeaderProps {
 
 export default function Header({ toggleMobileSidebar }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
+  const { role } = useAuth();
 
   return (
     <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -35,15 +37,19 @@ export default function Header({ toggleMobileSidebar }: HeaderProps) {
             )}
           </Button>
           
-          {/* User Avatar */}
+          {/* Settings Icon (replacing Admin) */}
           <div className="relative">
-            <button className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2">
               <Avatar className="h-8 w-8 border-2 border-white dark:border-gray-700">
-                <AvatarImage src="https://github.com/shadcn.png" alt="Admin" />
-                <AvatarFallback>A</AvatarFallback>
+                <AvatarImage src="/default-avatar.png" alt="User" />
+                <AvatarFallback>
+                  {role === 'admin' ? 'A' : 'V'}
+                </AvatarFallback>
               </Avatar>
-              <span className="hidden md:inline font-medium">Admin</span>
-            </button>
+              <span className="hidden md:inline font-medium">
+                {role === 'admin' ? 'Admin' : 'Viewer'}
+              </span>
+            </div>
           </div>
         </div>
       </div>
