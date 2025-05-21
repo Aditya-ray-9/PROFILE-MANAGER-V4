@@ -57,12 +57,13 @@ export default function ProfileList({
   interface ProfilesResponse {
     profiles: Array<{
       id: number;
+      profileId: string;
+      specialId: string;
       firstName: string;
       lastName: string;
       email: string;
       phone?: string;
-      profileType: string;
-      status: string;
+      description?: string;
       profilePicUrl?: string;
       isFavorite: boolean;
       isArchived: boolean;
@@ -238,12 +239,13 @@ export default function ProfileList({
               <ProfileCard
                 key={profile.id}
                 id={profile.id}
+                profileId={profile.profileId}
+                specialId={profile.specialId}
                 firstName={profile.firstName}
                 lastName={profile.lastName}
                 email={profile.email}
                 phone={profile.phone}
-                profileType={profile.profileType}
-                status={profile.status}
+                description={profile.description}
                 profilePicUrl={profile.profilePicUrl || "/default-avatar.png"}
                 isFavorite={profile.isFavorite}
                 isArchived={profile.isArchived}

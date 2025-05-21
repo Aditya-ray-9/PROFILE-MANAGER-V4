@@ -37,12 +37,13 @@ export interface ProfileCardProps {
 
 export default function ProfileCard({
   id,
+  profileId,
+  specialId,
   firstName,
   lastName,
   email,
   phone,
-  profileType,
-  status,
+  description,
   profilePicUrl,
   isFavorite,
   isArchived,
@@ -163,24 +164,11 @@ export default function ProfileCard({
   // Generate initials for avatar fallback
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
   
-  // Determine status badge color
-  const getStatusBadgeVariant = () => {
-    switch (status.toLowerCase()) {
-      case 'active': return 'success';
-      case 'pending': return 'warning';
-      case 'inactive': return 'outline';
-      default: return 'secondary';
-    }
-  };
-  
-  // Determine profile type badge color
-  const getProfileTypeBadgeVariant = () => {
-    switch (profileType.toLowerCase()) {
-      case 'client': return 'info';
-      case 'partner': return 'indigo';
-      case 'employee': return 'violet';
-      default: return 'secondary';
-    }
+  // Determine special ID badge color - simple version
+  const getSpecialIdBadgeVariant = () => {
+    if (specialId.length <= 3) return 'warning';
+    if (specialId.length <= 5) return 'info';
+    return 'secondary';
   };
   
   return (
@@ -201,16 +189,13 @@ export default function ProfileCard({
               <div>
                 <h3 className="text-lg font-medium">{firstName} {lastName}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  ID: PRF-{id} • Added {formattedDate()}
+                  ID: {profileId} • Added {formattedDate()}
                 </p>
               </div>
               
               <div className="flex items-center space-x-1">
-                <Badge variant={getStatusBadgeVariant() as any}>
-                  {status}
-                </Badge>
-                <Badge variant={getProfileTypeBadgeVariant() as any}>
-                  {profileType}
+                <Badge variant={getSpecialIdBadgeVariant() as any}>
+                  {specialId}
                 </Badge>
               </div>
             </div>
@@ -233,6 +218,13 @@ export default function ProfileCard({
                 {documentCount} Document{documentCount !== 1 ? 's' : ''}
               </div>
             </div>
+            
+            {description && (
+              <div className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                <i className="ri-file-text-line mr-1"></i>
+                {description}
+              </div>
+            )}
           </div>
           
           {/* Actions */}
