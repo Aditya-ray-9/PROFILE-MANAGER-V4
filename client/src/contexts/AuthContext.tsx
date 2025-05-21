@@ -39,52 +39,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Login function
   const login = async (selectedRole: UserRole, password?: string): Promise<boolean> => {
-    if (selectedRole === 'viewer') {
-      setRole('viewer');
-      setIsAuthenticated(true);
-      localStorage.setItem('userRole', 'viewer');
-      return true;
-    } 
-    
-    if (selectedRole === 'admin') {
-      if (!password) {
-        toast({
-          title: "Password Required",
-          description: "Please enter the admin password",
-          variant: "destructive",
-        });
-        return false;
-      }
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          role: selectedRole,
+          password: password || '',
+        }),
+      });
 
-      try {
-        // Verify password against hash
-        const isMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-        
-        if (isMatch) {
-          setRole('admin');
-          setIsAuthenticated(true);
-          localStorage.setItem('userRole', 'admin');
-          return true;
-        } else {
-          toast({
-            title: "Invalid Password",
-            description: "The password you entered is incorrect",
-            variant: "destructive",
-          });
-          return false;
-        }
-      } catch (error) {
-        console.error("Password verification error:", error);
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        setRole(selectedRole);
+        setIsAuthenticated(true);
+        localStorage.setItem('userRole', selectedRole);
+        return true;
+      } else {
         toast({
-          title: "Authentication Error",
-          description: "There was a problem with authentication",
+          title: "Authentication Failed",
+          description: data.message || "Invalid credentials",
           variant: "destructive",
         });
         return false;
       }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast({
+        title: "Authentication Error",
+        description: "There was a problem connecting to the server",
+        variant: "destructive",
+      });
+      return false;
     }
-
-    return false;
   };
 
   // Logout function

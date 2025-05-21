@@ -7,6 +7,8 @@ import multer from "multer";
 import path from "path";
 import fs from "fs/promises";
 import { randomUUID } from "crypto";
+import session from "express-session";
+import { login, logout, authenticate, requireAdmin } from "./auth";
 
 // Set up multer for file uploads
 const storage_dir = path.join(process.cwd(), "uploads");
@@ -35,8 +37,30 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // API routes
-  const apiRouter = app.route("/api");
+  // Set up session middleware
+  app.use(session({
+    secret: 'neon-profiles-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+  }));
+
+  // Auth routes
+  app.post('/api/auth/login', login);
+  app.post('/api/auth/logout', logout);
+  
+  // Current user route
+  app.get('/api/auth/user', (req: Request, res: Response) => {
+    if (req.session && req.session.user) {
+      return res.json({ 
+        role: req.session.user.role
+      });
+    }
+    return res.status(401).json({ message: 'Not authenticated' });
+  });
   
   // GET /api/profiles - Get all profiles with pagination and filtering
   app.get("/api/profiles", async (req: Request, res: Response) => {
