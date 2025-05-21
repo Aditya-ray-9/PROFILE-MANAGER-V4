@@ -16,7 +16,6 @@ import { apiRequest } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
 
 export interface ProfileCardProps {
   id: number;
@@ -52,10 +51,9 @@ export default function ProfileCard({
   onOpenEdit
 }: ProfileCardProps) {
   const queryClient = useQueryClient();
-  const { role } = useAuth();
   
-  // Check if user is admin
-  const isAdmin = role === 'admin';
+  // All users have admin capabilities
+  const isAdmin = true;
   
   // Format dates nicely
   const formattedDate = () => {

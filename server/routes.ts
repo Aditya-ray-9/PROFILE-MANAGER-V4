@@ -131,8 +131,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // POST /api/profiles - Create new profile (admin only)
-  app.post("/api/profiles", requireAdmin, async (req: Request, res: Response) => {
+  // POST /api/profiles - Create new profile
+  app.post("/api/profiles", async (req: Request, res: Response) => {
     try {
       const profileData = insertProfileSchema.parse(req.body);
       const newProfile = await storage.createProfile(profileData);
@@ -150,8 +150,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // PUT /api/profiles/:id - Update profile (admin only)
-  app.put("/api/profiles/:id", requireAdmin, async (req: Request, res: Response) => {
+  // PUT /api/profiles/:id - Update profile
+  app.put("/api/profiles/:id", async (req: Request, res: Response) => {
     try {
       const profileId = parseInt(req.params.id);
       const profileData = insertProfileSchema.partial().parse(req.body);

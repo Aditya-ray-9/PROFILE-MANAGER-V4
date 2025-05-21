@@ -5,7 +5,7 @@ interface EmptyStateProps {
   description?: string;
   icon: string;
   actionLabel: string;
-  onAction: () => void;
+  onAction?: () => void;
 }
 
 export default function EmptyState({
@@ -24,10 +24,16 @@ export default function EmptyState({
       <p className="text-gray-500 dark:text-gray-400 max-w-md mb-4">
         {description}
       </p>
-      <Button onClick={onAction}>
-        <i className="ri-add-line mr-2"></i>
-        {actionLabel}
-      </Button>
+      {onAction ? (
+        <Button onClick={onAction}>
+          <i className="ri-add-line mr-2"></i>
+          {actionLabel}
+        </Button>
+      ) : (
+        <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+          {actionLabel}
+        </div>
+      )}
     </div>
   );
 }
