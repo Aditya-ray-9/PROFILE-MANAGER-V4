@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -9,13 +8,18 @@ interface HeaderProps {
 
 export default function Header({ toggleMobileSidebar }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
-  const { role } = useAuth();
 
   return (
     <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="flex justify-between items-center px-4 h-16">
         <div className="flex items-center space-x-3">
           {/* Logo */}
+          <button 
+            onClick={toggleMobileSidebar}
+            className="md:hidden h-8 w-8 rounded bg-neon-500 flex items-center justify-center text-white"
+          >
+            <i className="ri-menu-line"></i>
+          </button>
           <div className="h-8 w-8 rounded bg-neon-500 flex items-center justify-center text-white">
             <i className="ri-user-3-line"></i>
           </div>
@@ -37,17 +41,15 @@ export default function Header({ toggleMobileSidebar }: HeaderProps) {
             )}
           </Button>
           
-          {/* Settings Icon (replacing Admin) */}
+          {/* User Avatar */}
           <div className="relative">
             <div className="flex items-center space-x-2">
               <Avatar className="h-8 w-8 border-2 border-white dark:border-gray-700">
                 <AvatarImage src="/default-avatar.png" alt="User" />
-                <AvatarFallback>
-                  {role === 'admin' ? 'A' : 'V'}
-                </AvatarFallback>
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <span className="hidden md:inline font-medium">
-                {role === 'admin' ? 'Admin' : 'Viewer'}
+                User
               </span>
             </div>
           </div>

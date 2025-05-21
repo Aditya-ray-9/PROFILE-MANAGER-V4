@@ -6,7 +6,6 @@ import EmptyState from "./EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface ProfileListProps {
   apiEndpoint: string;
@@ -29,10 +28,9 @@ export default function ProfileList({
   const [editProfileId, setEditProfileId] = useState<number | null>(null);
   const [viewType, setViewType] = useState<"list" | "grid">("list");
   const [sortBy, setSortBy] = useState<string>("name-asc");
-  const { role } = useAuth();
   
-  // Check if user is admin or viewer
-  const isAdmin = role === 'admin';
+  // All users are considered admins now
+  const isAdmin = true;
   
   // Build query parameters
   const buildQueryParams = () => {
