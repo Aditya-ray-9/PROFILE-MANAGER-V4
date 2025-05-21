@@ -60,10 +60,10 @@ export default function Sidebar({ isMobile = false, onClose }: { isMobile?: bool
             {filteredNavItems.map((item) => (
               <li key={item.path}>
                 <Link href={item.path}>
-                  <a
+                  <div
                     onClick={handleClick}
                     className={cn(
-                      "flex items-center space-x-3 px-3 py-2 rounded-lg",
+                      "flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer",
                       location === item.path
                         ? "bg-neon-50 dark:bg-gray-700 text-neon-600 dark:text-neon-400 font-medium"
                         : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -71,7 +71,7 @@ export default function Sidebar({ isMobile = false, onClose }: { isMobile?: bool
                   >
                     <i className={cn(item.icon, "text-lg")}></i>
                     <span>{item.label}</span>
-                  </a>
+                  </div>
                 </Link>
               </li>
             ))}

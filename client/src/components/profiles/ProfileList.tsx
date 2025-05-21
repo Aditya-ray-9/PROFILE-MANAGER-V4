@@ -6,6 +6,7 @@ import EmptyState from "./EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProfileListProps {
   apiEndpoint: string;
@@ -28,6 +29,10 @@ export default function ProfileList({
   const [editProfileId, setEditProfileId] = useState<number | null>(null);
   const [viewType, setViewType] = useState<"list" | "grid">("list");
   const [sortBy, setSortBy] = useState<string>("name-asc");
+  const { role } = useAuth();
+  
+  // Check if user is admin or viewer
+  const isAdmin = role === 'admin';
   
   // Build query parameters
   const buildQueryParams = () => {
@@ -156,13 +161,15 @@ export default function ProfileList({
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center px-4 py-2 bg-neon-500 hover:bg-neon-600 text-white rounded-lg transition-colors"
-        >
-          <i className="ri-add-line mr-2"></i>
-          <span>Add Profile</span>
-        </button>
+        {isAdmin && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center px-4 py-2 bg-neon-500 hover:bg-neon-600 text-white rounded-lg transition-colors"
+          >
+            <i className="ri-add-line mr-2"></i>
+            <span>Add Profile</span>
+          </button>
+        )}
       </div>
       
       {/* Profiles List */}
@@ -204,9 +211,10 @@ export default function ProfileList({
         {showEmptyState ? (
           <EmptyState 
             message={emptyStateMessage}
-            icon="ri-user-add-line"
-            actionLabel="Add Your First Profile"
-            onAction={() => setIsAddModalOpen(true)}
+            icon="ri-user-search-line"
+            actionLabel={isAdmin ? "Add Your First Profile" : "No Profiles Available"}
+            onAction={isAdmin ? () => setIsAddModalOpen(true) : () => {}}
+            description={isAdmin ? "Create a new profile to get started" : "There are no profiles to view at this time"}
           />
         ) : (
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -220,11 +228,11 @@ export default function ProfileList({
                 phone={profile.phone}
                 profileType={profile.profileType}
                 status={profile.status}
-                profilePicUrl={profile.profilePicUrl}
+                profilePicUrl={profile.profilePicUrl || "/default-avatar.png"}
                 isFavorite={profile.isFavorite}
                 isArchived={profile.isArchived}
                 createdAt={profile.createdAt}
-                onOpenEdit={handleOpenEdit}
+                onOpenEdit={isAdmin ? handleOpenEdit : undefined}
               />
             ))}
           </div>
