@@ -178,6 +178,7 @@ export default function ProfileList({
         
         {isAdmin && (
           <button 
+            id="add-profile-button"
             onClick={() => setIsAddModalOpen(true)}
             className="flex items-center px-4 py-2 bg-neon-500 hover:bg-neon-600 text-white rounded-lg transition-colors"
           >
