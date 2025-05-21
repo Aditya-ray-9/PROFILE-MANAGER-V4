@@ -5,13 +5,13 @@ import { z } from "zod";
 // Profile schema
 export const profiles = pgTable("profiles", {
   id: serial("id").primaryKey(),
+  profileId: text("profile_id").notNull(),  // Added custom profile ID
+  specialId: text("special_id").notNull(),  // Added special ID for searching
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
-  profileType: text("profile_type").notNull().default("client"),
-  status: text("status").notNull().default("active"),
-  notes: text("notes"),
+  description: text("description"),  // Added description
   profilePicUrl: text("profile_pic_url"),
   isFavorite: boolean("is_favorite").default(false),
   isArchived: boolean("is_archived").default(false),
@@ -50,6 +50,7 @@ export const settings = pgTable("settings", {
 // Insert schemas using drizzle-zod
 export const insertProfileSchema = createInsertSchema(profiles, {
   email: z.string().email("Invalid email address"),
+  specialId: z.string().min(2, "Special ID must be at least 2 characters"),
 }).omit({ 
   id: true, 
   createdAt: true, 

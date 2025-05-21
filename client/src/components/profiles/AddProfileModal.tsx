@@ -46,9 +46,9 @@ export default function AddProfileModal({
       lastName: "",
       email: "",
       phone: "",
-      profileType: "client",
-      status: "active",
-      notes: "",
+      profileId: "",
+      specialId: "",
+      description: "",
       isFavorite: false,
       isArchived: false
     }

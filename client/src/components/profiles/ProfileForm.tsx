@@ -117,29 +117,22 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
           />
         </div>
         
-        {/* Profile Type and Status */}
+        {/* Profile ID and Special ID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={control}
-            name="profileType"
+            name="profileId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Profile Type <span className="text-red-500">*</span>
+                  Profile ID <span className="text-red-500">*</span>
                 </FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select profile type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="client">Client</SelectItem>
-                    <SelectItem value="partner">Partner</SelectItem>
-                    <SelectItem value="employee">Employee</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <Input {...field} placeholder="Enter profile ID" />
+                </FormControl>
+                <FormDescription>
+                  Custom ID for information purposes
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -147,27 +140,42 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
           
           <FormField
             control={control}
-            name="status"
+            name="specialId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Status</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormLabel>
+                  Special ID <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Enter special ID (min 2 chars)" />
+                </FormControl>
+                <FormDescription>
+                  Used for searching (minimum 2 characters)
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+        
+        {/* Description */}
+        <FormField
+          control={control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea 
+                  {...field} 
+                  placeholder="Add a description for this profile..."
+                  rows={3}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
     );
   }
