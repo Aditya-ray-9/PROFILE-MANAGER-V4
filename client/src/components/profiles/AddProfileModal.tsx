@@ -155,15 +155,15 @@ export default function AddProfileModal({
     let fieldsToValidate: string[] = [];
     
     if (step === 0) {
-      // Basic info fields
-      fieldsToValidate = ['firstName', 'lastName', 'profileId', 'specialId'];
+      // Only first and last name are required
+      fieldsToValidate = ['firstName', 'lastName'];
     } else if (step === 1) {
-      // Contact details fields
-      fieldsToValidate = ['email'];
+      // No required validation for contact details
+      fieldsToValidate = [];
     }
     
     // Validate only the relevant fields
-    const isValid = await methods.trigger(fieldsToValidate as any);
+    const isValid = fieldsToValidate.length === 0 ? true : await methods.trigger(fieldsToValidate as any);
     
     if (isValid) {
       if (step < 2) {
