@@ -16,11 +16,11 @@ export default function Header({ toggleMobileSidebar }: HeaderProps) {
           {/* Logo */}
           <button 
             onClick={toggleMobileSidebar}
-            className="md:hidden h-8 w-8 rounded bg-neon-500 flex items-center justify-center text-white"
+            className="md:hidden h-8 w-8 rounded bg-blue-600 flex items-center justify-center text-white shadow-sm"
           >
             <i className="ri-menu-line"></i>
           </button>
-          <div className="h-8 w-8 flex items-center justify-center bg-neon-500 text-white rounded">
+          <div className="h-8 w-8 flex items-center justify-center bg-blue-600 text-white rounded shadow-sm">
             <i className="ri-user-line text-xl"></i>
           </div>
           <h1 className="text-xl font-semibold text-neon-600 dark:text-neon-400">Profile Manager</h1>
