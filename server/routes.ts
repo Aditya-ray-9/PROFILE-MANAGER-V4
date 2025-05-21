@@ -37,29 +37,16 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Set up session middleware
-  app.use(session({
-    secret: 'neon-profiles-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-  }));
-
-  // Auth routes
-  app.post('/api/auth/login', login);
-  app.post('/api/auth/logout', logout);
+  // Since we're removing the authentication feature, we'll simulate a simpler middleware
+  app.use((req, res, next) => {
+    next();
+  });
   
-  // Current user route
+  // User route - returns a fixed admin role since we've removed authentication
   app.get('/api/auth/user', (req: Request, res: Response) => {
-    if (req.session && req.session.user) {
-      return res.json({ 
-        role: req.session.user.role
-      });
-    }
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.json({ 
+      role: 'admin'
+    });
   });
   
   // GET /api/profiles - Get all profiles with pagination and filtering
@@ -176,8 +163,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // DELETE /api/profiles/:id - Delete profile (admin only)
-  app.delete("/api/profiles/:id", requireAdmin, async (req: Request, res: Response) => {
+  // DELETE /api/profiles/:id - Delete profile
+  app.delete("/api/profiles/:id", async (req: Request, res: Response) => {
     try {
       const profileId = parseInt(req.params.id);
       const success = await storage.deleteProfile(profileId);
@@ -193,8 +180,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // PUT /api/profiles/:id/favorite - Toggle favorite status (admin only)
-  app.put("/api/profiles/:id/favorite", requireAdmin, async (req: Request, res: Response) => {
+  // PUT /api/profiles/:id/favorite - Toggle favorite status
+  app.put("/api/profiles/:id/favorite", async (req: Request, res: Response) => {
     try {
       const profileId = parseInt(req.params.id);
       const updatedProfile = await storage.toggleFavorite(profileId);
@@ -210,8 +197,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // PUT /api/profiles/:id/archive - Toggle archived status (admin only)
-  app.put("/api/profiles/:id/archive", requireAdmin, async (req: Request, res: Response) => {
+  // PUT /api/profiles/:id/archive - Toggle archived status
+  app.put("/api/profiles/:id/archive", async (req: Request, res: Response) => {
     try {
       const profileId = parseInt(req.params.id);
       const updatedProfile = await storage.toggleArchived(profileId);
