@@ -17,8 +17,8 @@ interface AuthContextType {
 // Create context
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Password hash for "201099"
-const ADMIN_PASSWORD_HASH = '$2a$10$xK.Qi0z.EvMJ.H/4JsvIZOdYgd23vvX0GpaTiH5NOYwCGKyDXBHp6';
+// Using server-side password verification now
+// The password "201099" is stored encrypted in the database
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<UserRole>(null);
@@ -56,7 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok && data.success) {
         setRole(selectedRole);
         setIsAuthenticated(true);
-        localStorage.setItem('userRole', selectedRole);
+        if (selectedRole) {
+          localStorage.setItem('userRole', selectedRole);
+        }
         return true;
       } else {
         toast({
@@ -78,11 +80,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   // Logout function
-  const logout = () => {
-    setRole(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('userRole');
-    setLocation('/login');
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Even if server logout fails, clear local state
+      setRole(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem('userRole');
+      setLocation('/login');
+    }
   };
 
   return (
