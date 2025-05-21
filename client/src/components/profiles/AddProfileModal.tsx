@@ -13,16 +13,10 @@ import DocumentsForm from "@/components/ui/file-uploader";
 import MultiStep from "@/components/ui/multi-step";
 
 // Extend profile schema for client-side validation
+// Keep email as required but modify other fields
 const profileFormSchema = insertProfileSchema.extend({
   confirmEmail: z.string()
     .optional(),
-}).partial({
-  // Make all these fields optional
-  email: true,
-  phone: true,
-  description: true,
-  profileId: true,
-  specialId: true
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -281,7 +275,7 @@ export default function AddProfileModal({
                   type="button"
                   onClick={() => onSubmit(methods.getValues())}
                   disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
-                  className="bg-blue-500 hover:bg-blue-600 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2"
                 >
                   {isEditing ? "Save Changes" : "Create Profile"}
                 </Button>

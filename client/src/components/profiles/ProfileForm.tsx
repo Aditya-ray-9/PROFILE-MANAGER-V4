@@ -192,11 +192,14 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Email
+                Email <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <Input {...field} type="email" placeholder="email@example.com" value={field.value || ""} />
               </FormControl>
+              <FormDescription>
+                A valid email address is required
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
