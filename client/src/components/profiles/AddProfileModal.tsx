@@ -20,10 +20,12 @@ const profileFormSchema = insertProfileSchema.extend({
       message: "Emails don't match",
     }),
 }).partial({
-  // Make these fields optional for easier form completion 
+  // Make all contact details completely optional
   email: true,
   phone: true,
   description: true,
+  profileId: true,
+  specialId: true
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;

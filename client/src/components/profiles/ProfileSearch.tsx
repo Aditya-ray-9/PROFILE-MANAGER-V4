@@ -142,7 +142,7 @@ export default function ProfileSearch({ onSearch, onFilter }: ProfileSearchProps
           </PopoverContent>
         </Popover>
         
-        <Button onClick={() => window.location.href = "/"}>
+        <Button onClick={() => document.getElementById('add-profile-button')?.click()}>
           <i className="ri-add-line mr-2"></i>
           <span>Add Profile</span>
         </Button>
