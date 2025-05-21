@@ -144,8 +144,20 @@ export default function AddProfileModal({
   
   // Handle next step
   const handleNextStep = async () => {
-    // Validate current step
-    const isValid = await methods.trigger();
+    // Validate only fields relevant to the current step
+    let fieldsToValidate: string[] = [];
+    
+    if (step === 0) {
+      // Basic info fields
+      fieldsToValidate = ['firstName', 'lastName', 'profileId', 'specialId'];
+    } else if (step === 1) {
+      // Contact details fields
+      fieldsToValidate = ['email'];
+    }
+    
+    // Validate only the relevant fields
+    const isValid = await methods.trigger(fieldsToValidate as any);
+    
     if (isValid) {
       if (step < 2) {
         setStep(step + 1);
@@ -153,6 +165,8 @@ export default function AddProfileModal({
         // Submit form on last step
         methods.handleSubmit(onSubmit)();
       }
+    } else {
+      console.log('Validation errors:', methods.formState.errors);
     }
   };
   

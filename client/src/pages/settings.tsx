@@ -118,22 +118,29 @@ export default function Settings() {
             <CardContent className="space-y-6">
               <div>
                 <Label htmlFor="items-per-page" className="text-base mb-2 block">Default Items Per Page</Label>
-                <Select 
-                  value={itemsPerPage}
-                  onValueChange={(value) => {
-                    setItemsPerPage(value);
-                    updateSetting('defaultItemsPerPage', parseInt(value));
-                  }}
-                >
-                  <SelectTrigger id="items-per-page" className="w-[200px]">
-                    <SelectValue placeholder="Select items per page" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10 items</SelectItem>
-                    <SelectItem value="25">25 items</SelectItem>
-                    <SelectItem value="50">50 items</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center space-x-2">
+                  <Select 
+                    value={itemsPerPage}
+                    onValueChange={(value) => {
+                      setItemsPerPage(value);
+                      updateSetting('defaultItemsPerPage', parseInt(value));
+                    }}
+                  >
+                    <SelectTrigger id="items-per-page" className="w-[150px]">
+                      <SelectValue placeholder="Select items" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="6">6 items</SelectItem>
+                      <SelectItem value="10">10 items</SelectItem>
+                      <SelectItem value="20">20 items</SelectItem>
+                      <SelectItem value="30">30 items</SelectItem>
+                      <SelectItem value="50">50 items</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    (Default: 10 items)
+                  </p>
+                </div>
               </div>
               
               <Separator />

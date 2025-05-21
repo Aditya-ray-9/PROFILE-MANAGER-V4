@@ -23,7 +23,7 @@ export default function Header({ toggleMobileSidebar }: HeaderProps) {
           <div className="h-8 w-8 rounded bg-neon-500 flex items-center justify-center text-white">
             <i className="ri-user-3-line"></i>
           </div>
-          <h1 className="text-xl font-semibold text-neon-600 dark:text-neon-400">NeonProfiles</h1>
+          <h1 className="text-xl font-semibold text-neon-600 dark:text-neon-400">Profile Manager</h1>
         </div>
         
         <div className="flex items-center space-x-4">
