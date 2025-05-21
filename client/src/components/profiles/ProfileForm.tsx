@@ -238,26 +238,6 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
       />
       
       <Separator />
-      
-      {/* Description */}
-      <FormField
-        control={control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Description</FormLabel>
-            <FormControl>
-              <Textarea 
-                {...field} 
-                placeholder="Add a description for this profile..."
-                rows={3}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 }

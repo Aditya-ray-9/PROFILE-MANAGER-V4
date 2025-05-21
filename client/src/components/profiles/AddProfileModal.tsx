@@ -13,10 +13,10 @@ import DocumentsForm from "@/components/ui/file-uploader";
 import MultiStep from "@/components/ui/multi-step";
 
 // Extend profile schema for client-side validation
-// Keep email as required but modify other fields
+// Override the email validation to make it optional
 const profileFormSchema = insertProfileSchema.extend({
-  confirmEmail: z.string()
-    .optional(),
+  email: z.string().email("Invalid email address").optional(),
+  confirmEmail: z.string().optional(),
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;

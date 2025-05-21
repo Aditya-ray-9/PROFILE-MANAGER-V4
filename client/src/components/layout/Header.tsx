@@ -20,8 +20,8 @@ export default function Header({ toggleMobileSidebar }: HeaderProps) {
           >
             <i className="ri-menu-line"></i>
           </button>
-          <div className="h-8 w-8 flex items-center justify-center">
-            <img src="/icons.png" alt="Profile Manager Icon" className="h-8 w-8"/>
+          <div className="h-8 w-8 flex items-center justify-center bg-neon-500 text-white rounded">
+            <i className="ri-user-line text-xl"></i>
           </div>
           <h1 className="text-xl font-semibold text-neon-600 dark:text-neon-400">Profile Manager</h1>
         </div>
