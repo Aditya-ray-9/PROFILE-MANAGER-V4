@@ -122,8 +122,25 @@ export default function Settings() {
                   <Select 
                     value={itemsPerPage}
                     onValueChange={(value) => {
-                      setItemsPerPage(value);
-                      updateSetting('defaultItemsPerPage', parseInt(value));
+                      if (value === "custom") {
+                        const customValue = prompt("Enter custom number of items per page (minimum 6):");
+                        if (customValue) {
+                          const numValue = parseInt(customValue);
+                          if (!isNaN(numValue) && numValue >= 6) {
+                            setItemsPerPage(String(numValue));
+                            updateSetting('defaultItemsPerPage', numValue);
+                          } else {
+                            toast({
+                              title: "Invalid value",
+                              description: "Please enter a number 6 or greater.",
+                              variant: "destructive"
+                            });
+                          }
+                        }
+                      } else {
+                        setItemsPerPage(value);
+                        updateSetting('defaultItemsPerPage', parseInt(value));
+                      }
                     }}
                   >
                     <SelectTrigger id="items-per-page" className="w-[150px]">
@@ -135,10 +152,11 @@ export default function Settings() {
                       <SelectItem value="20">20 items</SelectItem>
                       <SelectItem value="30">30 items</SelectItem>
                       <SelectItem value="50">50 items</SelectItem>
+                      <SelectItem value="custom">Custom...</SelectItem>
                     </SelectContent>
                   </Select>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    (Default: 10 items)
+                    {itemsPerPage !== "custom" ? `(${itemsPerPage} items per page)` : "(Custom value)"}
                   </p>
                 </div>
               </div>

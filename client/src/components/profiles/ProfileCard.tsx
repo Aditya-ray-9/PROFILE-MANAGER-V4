@@ -162,6 +162,16 @@ export default function ProfileCard({
   // Generate initials for avatar fallback
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
   
+  // Format the created date
+  const formatCreatedDate = () => {
+    if (!createdAt) return "N/A";
+    try {
+      return format(new Date(createdAt), 'MMM d, yyyy');
+    } catch (e) {
+      return "N/A";
+    }
+  };
+  
   // Determine special ID badge color - simple version
   const getSpecialIdBadgeVariant = () => {
     if (specialId.length <= 3) return 'warning';
@@ -187,7 +197,7 @@ export default function ProfileCard({
               <div>
                 <h3 className="text-lg font-medium">{firstName} {lastName}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  ID: {profileId} • Added {formattedDate()}
+                  ID: {profileId} • Created on {formatCreatedDate()}
                 </p>
               </div>
               
