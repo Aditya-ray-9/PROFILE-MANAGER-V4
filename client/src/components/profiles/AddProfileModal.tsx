@@ -244,42 +244,46 @@ export default function AddProfileModal({
             
             {/* Footer Actions */}
             <DialogFooter className="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-t border-gray-200 dark:border-gray-700 mt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-              >
-                Cancel
-              </Button>
-              
-              {step > 0 && (
+              <div className="flex w-full justify-between">
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={handlePrevStep}
+                  onClick={handleClose}
                 >
-                  Previous
+                  Cancel
                 </Button>
-              )}
-              
-              {step < 2 ? (
-                <Button
-                  type="button"
-                  onClick={handleNextStep}
-                  disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
-                >
-                  Next Step
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  onClick={() => onSubmit(methods.getValues())}
-                  disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2"
-                >
-                  {isEditing ? "Save Changes" : "Create Profile"}
-                </Button>
-              )}
+                
+                <div className="flex space-x-2">
+                  {step > 0 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handlePrevStep}
+                    >
+                      Previous
+                    </Button>
+                  )}
+                  
+                  {step < 2 ? (
+                    <Button
+                      type="button"
+                      onClick={handleNextStep}
+                      disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
+                    >
+                      Next Step
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      onClick={() => onSubmit(methods.getValues())}
+                      disabled={createProfileMutation.isPending || updateProfileMutation.isPending}
+                      className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2"
+                    >
+                      {isEditing ? "Save Changes" : "Create Profile"}
+                    </Button>
+                  )}
+                </div>
+              </div>
             </DialogFooter>
           </form>
         </FormProvider>

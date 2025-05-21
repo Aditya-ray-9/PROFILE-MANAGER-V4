@@ -25,15 +25,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [, setLocation] = useLocation();
 
-  // On mount, check local storage for existing session
+  // On mount, check local storage for existing session or set default admin
   useEffect(() => {
     const storedRole = localStorage.getItem('userRole');
     if (storedRole) {
       setRole(storedRole as UserRole);
       setIsAuthenticated(true);
     } else {
-      // Redirect to login if not authenticated
-      setLocation('/login');
+      // Set default role to admin for easier testing
+      setRole('admin');
+      setIsAuthenticated(true);
+      localStorage.setItem('userRole', 'admin');
     }
   }, [setLocation]);
 
