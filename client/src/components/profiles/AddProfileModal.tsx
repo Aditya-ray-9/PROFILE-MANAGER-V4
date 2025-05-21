@@ -69,9 +69,9 @@ export default function AddProfileModal({
         lastName: profileData.lastName,
         email: profileData.email,
         phone: profileData.phone || "",
-        profileType: profileData.profileType,
-        status: profileData.status,
-        notes: profileData.notes || "",
+        profileId: profileData.profileId || "",
+        specialId: profileData.specialId || "",
+        description: profileData.description || "",
         isFavorite: profileData.isFavorite,
         isArchived: profileData.isArchived
       });

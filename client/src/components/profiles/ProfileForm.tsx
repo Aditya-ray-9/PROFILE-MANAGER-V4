@@ -128,7 +128,7 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
                   Profile ID <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter profile ID" />
+                  <Input {...field} placeholder="Enter profile ID" value={field.value || ""} />
                 </FormControl>
                 <FormDescription>
                   Custom ID for information purposes
@@ -147,7 +147,7 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
                   Special ID <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter special ID (min 2 chars)" />
+                  <Input {...field} placeholder="Enter special ID (min 2 chars)" value={field.value || ""} />
                 </FormControl>
                 <FormDescription>
                   Used for searching (minimum 2 characters)
@@ -194,7 +194,7 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
                 Email <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input {...field} type="email" placeholder="email@example.com" />
+                <Input {...field} type="email" placeholder="email@example.com" value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -235,18 +235,19 @@ export default function ProfileForm({ contactDetails = false }: ProfileFormProps
       
       <Separator />
       
-      {/* Notes */}
+      {/* Description */}
       <FormField
         control={control}
-        name="notes"
+        name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Notes</FormLabel>
+            <FormLabel>Description</FormLabel>
             <FormControl>
               <Textarea 
                 {...field} 
-                placeholder="Add any additional notes about this profile..."
+                placeholder="Add a description for this profile..."
                 rows={3}
+                value={field.value || ""}
               />
             </FormControl>
             <FormMessage />

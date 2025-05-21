@@ -20,12 +20,13 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export interface ProfileCardProps {
   id: number;
+  profileId: string;
+  specialId: string;
   firstName: string;
   lastName: string;
   email: string;
   phone?: string;
-  profileType: string;
-  status: string;
+  description?: string;
   profilePicUrl?: string;
   isFavorite: boolean;
   isArchived: boolean;

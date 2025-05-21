@@ -94,13 +94,9 @@ export class DatabaseStorage implements IStorage {
       );
     }
     
-    // Add filters
-    if (filter.profileType) {
-      conditions.push(eq(profiles.profileType, filter.profileType));
-    }
-    
-    if (filter.status) {
-      conditions.push(eq(profiles.status, filter.status));
+    // Add filters for search using specialId
+    if (filter.specialId) {
+      conditions.push(sql`${profiles.specialId} ILIKE ${`%${filter.specialId}%`}`);
     }
     
     // Filter out archived profiles unless specifically requested

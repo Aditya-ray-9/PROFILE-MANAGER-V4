@@ -32,8 +32,7 @@ interface ProfileSearchProps {
 
 // Define filter schema
 const filterSchema = z.object({
-  profileType: z.string().optional(),
-  status: z.string().optional(),
+  specialId: z.string().optional(),
   includeArchived: z.boolean().optional()
 });
 
@@ -47,8 +46,7 @@ export default function ProfileSearch({ onSearch, onFilter }: ProfileSearchProps
   const form = useForm<FilterValues>({
     resolver: zodResolver(filterSchema),
     defaultValues: {
-      profileType: "",
-      status: "",
+      specialId: "",
       includeArchived: false
     }
   });
@@ -74,8 +72,7 @@ export default function ProfileSearch({ onSearch, onFilter }: ProfileSearchProps
   // Handle filter reset
   const handleFilterReset = () => {
     form.reset({
-      profileType: "",
-      status: "",
+      specialId: "",
       includeArchived: false
     });
     onFilter({});
@@ -113,52 +110,17 @@ export default function ProfileSearch({ onSearch, onFilter }: ProfileSearchProps
                 <form onSubmit={form.handleSubmit(handleFilterSubmit)} className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="profileType"
+                    name="specialId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Profile Type</FormLabel>
-                        <Select 
-                          value={field.value} 
-                          onValueChange={field.onChange}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="All types" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="">All types</SelectItem>
-                            <SelectItem value="client">Client</SelectItem>
-                            <SelectItem value="partner">Partner</SelectItem>
-                            <SelectItem value="employee">Employee</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Status</FormLabel>
-                        <Select 
-                          value={field.value} 
-                          onValueChange={field.onChange}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Any status" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="">Any status</SelectItem>
-                            <SelectItem value="active">Active</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="inactive">Inactive</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <FormLabel>Special ID</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Search by Special ID"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
                       </FormItem>
                     )}
                   />
